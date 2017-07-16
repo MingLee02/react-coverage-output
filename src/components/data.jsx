@@ -2,13 +2,6 @@ import React from 'react';
 import json from '../data/test.json';
 import Table from './table';
 
-
-const totalCoverage = {
-    'statements': 0,
-    'missing': 0,
-    'coverage': 0
-}
-
 export const getCoverage = function(statements=0, tests=0) {
     if (!isNaN(statements) && !isNaN(tests)) {
         return 100 - (tests / statements * 100).toFixed(2) + '%';
@@ -24,10 +17,16 @@ export const getCoverage = function(statements=0, tests=0) {
  */
 export const getPath = function(key="") {
     if (key.charAt(0) === '/') {
-        key = key.substring(1)
+        key = key.substring(1);
     }
     return key.substring(0, key.indexOf('/'));
-}
+};
+
+const aggregateParentsData = function (object, missing, value) {
+    object.statements = object.statements + value;
+    object.missing = object.missing + missing;
+    object.coverage = getCoverage(object.statements, missing);
+};
 
 export const buildTableData = function(key, table='parent', childsParent={}) {
     const value = json[key];
@@ -37,10 +36,9 @@ export const buildTableData = function(key, table='parent', childsParent={}) {
 
     if (table === 'child') {
         key = key.substring(key.indexOf("/") + 1);
+        aggregateParentsData(childsParent, missing, value[1])
     }
-    childsParent.statements = childsParent.statements + value[1];
-    childsParent.missing = childsParent.missing + missing;
-    childsParent.coverage = getCoverage(childsParent.statements, childsParent.missing);
+    
     return {
         'path': path || '',
         'name': key,
@@ -62,14 +60,14 @@ export const getTimesInArray = function(array, name) {
 
 export default React.createClass({
   render: function() {
-    const itemArr = []
+    const tableData = []
 
     for(let key in json) {
         const path = getPath(key);
         if (path.length > 0) {
             var childArr = []
 
-            const numInArray = getTimesInArray(itemArr, path);
+            const numInArray = getTimesInArray(tableData, path);
             
             if (numInArray === 0) {
                 var parentRow = {
@@ -80,7 +78,7 @@ export default React.createClass({
                     'missing': 0,
                     'coverage': 0
                 }
-                itemArr.push(parentRow)
+                tableData.push(parentRow)
                 for(var key in json) {
                     if(key.indexOf(path) !== -1) {
                         childArr.push(buildTableData(key, 'child', parentRow))
@@ -89,24 +87,14 @@ export default React.createClass({
                 childArr = []
             }
         } else {
-            itemArr.push(buildTableData(key));
+            tableData.push(buildTableData(key));
         }
-        const value = json[key];
-        totalCoverage.statements += value[1]
-        totalCoverage.missing += value[0]
-        totalCoverage.coverage = getCoverage(totalCoverage.statements, totalCoverage.missing);
+        var value = json[key];
     }
-
     return (
         <div>
             <h1>Coverage Report</h1>
-            <div>
-                <h2>Total</h2> 
-                <p><strong>Lines of Code:</strong> {totalCoverage.statements}</p>
-                <p><strong>Missing:</strong> {totalCoverage.missing}</p>
-                <p><strong>Coverage:</strong> {totalCoverage.coverage}</p>
-            </div>
-            <Table data={itemArr} />
+            <Table data={tableData} />
         </div>
     );
   }
