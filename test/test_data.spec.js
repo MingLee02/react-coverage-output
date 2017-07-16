@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getCoverage, getPath, buildTableData} from '../src/components/data';
+import {getCoverage, getPath, buildTableData, getTimesInArray} from '../src/components/data';
 
 describe('data', () => {
     describe('getCoverage', () => {
@@ -36,7 +36,7 @@ describe('data', () => {
             expect(path).to.equal(expectedAnswer);
         })
     })
-     describe('buildTableData', () => {
+    describe('buildTableData', () => {
         const data = {"Main.java": [0, 10]}
         it('returns an object', () => {
             let object;
@@ -44,6 +44,21 @@ describe('data', () => {
                 object = buildTableData(key)
             }
             expect(object).to.be.an('object').to.have.property('name', 'Main.java')
+        })
+    })
+    describe('getTimesInArray', () => {
+        const data = [
+            {'path': 'grapes'},
+            {'path': 'bananas'},
+            {'path': 'pears'},
+        ]
+        it('returns 1', () => {
+            const result = getTimesInArray(data, 'grapes')
+            expect(result).to.equal(1);
+        })
+        it('returns 0', () => {
+            const result = getTimesInArray(data, 'apples')
+            expect(result).to.equal(0);
         })
     })
 })

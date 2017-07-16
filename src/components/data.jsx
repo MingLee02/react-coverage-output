@@ -29,17 +29,20 @@ export const getPath = function(key="") {
     return key.substring(0, key.indexOf('/'));
 }
 
-export const buildTableData = function(key) {
+export const buildTableData = function(key, table='parent', childsParent={}) {
     const value = json[key];
-    const missing = value[1] - value[0]
-    const coverage = getCoverage(value[1], missing)
-    const path = getPath(key)
+    const missing = value[1] - value[0];
+    const coverage = getCoverage(value[1], missing);
+    const path = getPath(key);
 
-    totalCoverage.statements += value[1]
-    totalCoverage.missing += value[0]
-    
+    if (table === 'child') {
+        key = key.substring(key.indexOf("/") + 1);
+    }
+    childsParent.statements = childsParent.statements + value[1];
+    childsParent.missing = childsParent.missing + missing;
+    childsParent.coverage = getCoverage(childsParent.statements, childsParent.missing);
     return {
-        'path': path,
+        'path': path || '',
         'name': key,
         'tests': value[0],
         'statements': value[1],
@@ -48,12 +51,49 @@ export const buildTableData = function(key) {
     }
 }
 
+export const getTimesInArray = function(array, name) {
+    return array.reduce(function(counter , item) {
+        if(item.path === name) {
+           counter++;
+        }
+        return counter;
+    },0);
+}
+
 export default React.createClass({
   render: function() {
     const itemArr = []
 
     for(let key in json) {
-        itemArr.push(buildTableData(key));
+        const path = getPath(key);
+        if (path.length > 0) {
+            var childArr = []
+
+            const numInArray = getTimesInArray(itemArr, path);
+            
+            if (numInArray === 0) {
+                var parentRow = {
+                    'path': path,
+                    'name': path,
+                    'children': childArr,
+                    'statements': 0,
+                    'missing': 0,
+                    'coverage': 0
+                }
+                itemArr.push(parentRow)
+                for(var key in json) {
+                    if(key.indexOf(path) !== -1) {
+                        childArr.push(buildTableData(key, 'child', parentRow))
+                    }
+                }
+                childArr = []
+            }
+        } else {
+            itemArr.push(buildTableData(key));
+        }
+        const value = json[key];
+        totalCoverage.statements += value[1]
+        totalCoverage.missing += value[0]
         totalCoverage.coverage = getCoverage(totalCoverage.statements, totalCoverage.missing);
     }
 
