@@ -89,7 +89,6 @@ export default React.createClass({
         } else {
             tableData.push(buildTableData(key));
         }
-        var value = json[key];
     }
     return (
         <div>
