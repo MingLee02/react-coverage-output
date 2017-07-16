@@ -14,3 +14,10 @@ You will need npm installed.
 ### Installing
 
 `npm install`
+To run the project please use `npm run dev`.
+This will load the projectr on this address `http://localhost:8080/`
+
+## Running the tests
+
+To run the javascript tests please use `npm run tests`
+To run the eslint tests please use `npm run lint`
