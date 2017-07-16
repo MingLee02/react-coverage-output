@@ -5,7 +5,8 @@
   "author": "Chi Ming Lee",
   "scripts": {
     "lint": "eslint **/*.js",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "tests": "mocha --compilers js:babel-core/register --recursive"
   },
   "devDependencies": {
     "babel-core": "6.25.0",
