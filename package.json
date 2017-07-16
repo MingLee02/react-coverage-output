@@ -4,7 +4,8 @@
   "keywords": [],
   "author": "Chi Ming Lee",
   "scripts": {
-    "lint": "eslint **/*.js"
+    "lint": "eslint **/*.js",
+    "dev": "webpack-dev-server"
   },
   "devDependencies": {
     "babel-core": "6.25.0",
