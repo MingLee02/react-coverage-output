@@ -40,7 +40,6 @@ export const buildTableData = function(key, table='parent', childsParent={}) {
     }
     
     return {
-        'path': path || '',
         'name': key,
         'tests': value[0],
         'statements': value[1],
@@ -51,7 +50,7 @@ export const buildTableData = function(key, table='parent', childsParent={}) {
 
 export const getTimesInArray = function(array, name) {
     return array.reduce(function(counter , item) {
-        if(item.path === name) {
+        if(item.name === name) {
            counter++;
         }
         return counter;
@@ -74,7 +73,6 @@ export default React.createClass({
             
             if (numInArray === 0) {
                 var parentRow = {
-                    'path': path,
                     'name': path,
                     'children': childArr,
                     'statements': 0,
