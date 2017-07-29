@@ -6,7 +6,7 @@ class Table extends React.Component {
         super(props);
     }
     isExpandableRow(row) {
-        if (row.path.length > 0) {
+        if (row.children) {
             return true;
         } else {
             return false;
