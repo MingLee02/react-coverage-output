@@ -15,10 +15,10 @@ class Table extends React.Component {
     expandComponent(row) {
         return (
             <BootstrapTable data={row.children} >
-                <TableHeaderColumn isKey dataField='name'>File Name</TableHeaderColumn>
-                <TableHeaderColumn dataField='statements'>Lines of Code</TableHeaderColumn>
-                <TableHeaderColumn dataField='missing'>Missing</TableHeaderColumn>
-                <TableHeaderColumn dataField='coverage'>Coverage</TableHeaderColumn>
+                <TableHeaderColumn isKey dataField='name' dataSort={ true }>File Name</TableHeaderColumn>
+                <TableHeaderColumn dataField='statements' dataSort={ true }>Lines of Code</TableHeaderColumn>
+                <TableHeaderColumn dataField='missing' dataSort={ true }>Missing</TableHeaderColumn>
+                <TableHeaderColumn dataField='coverage' dataSort={ true }>Coverage</TableHeaderColumn>
             </BootstrapTable>
         );  
     }
@@ -26,10 +26,10 @@ class Table extends React.Component {
         return (
             <BootstrapTable data={this.props.data} hover pagination search
             expandableRow={ this.isExpandableRow } expandComponent={ this.expandComponent }>
-                <TableHeaderColumn isKey dataField='name'>File Name</TableHeaderColumn>
-                <TableHeaderColumn dataField='statements'>Lines of Code</TableHeaderColumn>
-                <TableHeaderColumn dataField='missing'>Missing</TableHeaderColumn>
-                <TableHeaderColumn dataField='coverage'>Coverage</TableHeaderColumn>
+                <TableHeaderColumn isKey dataField='name' dataSort={ true }>File Name</TableHeaderColumn>
+                <TableHeaderColumn dataField='statements' dataSort={ true }>Lines of Code</TableHeaderColumn>
+                <TableHeaderColumn dataField='missing' dataSort={ true }>Missing</TableHeaderColumn>
+                <TableHeaderColumn dataField='coverage' dataSort={ true }>Coverage</TableHeaderColumn>
             </BootstrapTable>
         );
     }
