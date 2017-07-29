@@ -61,8 +61,11 @@ export const getTimesInArray = function(array, name) {
 export default React.createClass({
   render: function() {
     const tableData = []
+    let totalStatements = 0
+    let totalMissing = 0
 
     for(let key in json) {
+        const value = json[key];
         const path = getPath(key);
         if (path.length > 0) {
             var childArr = []
@@ -85,14 +88,25 @@ export default React.createClass({
                     }
                 }
                 childArr = []
+                totalStatements = totalStatements + parentRow.statements;
+                totalMissing = totalMissing + parentRow.missing;
             }
         } else {
+            totalStatements = totalStatements + value[1];
+            totalMissing = totalMissing + value[1] - value[0];
             tableData.push(buildTableData(key));
         }
     }
+    let totalCoverage = getCoverage(totalStatements, totalMissing);
     return (
         <div>
             <h1>Coverage Report</h1>
+            <div>
+                 <h2>Total Coverage</h2> 
+                 <p><strong>Lines of Code:</strong> {totalStatements}</p>
+                 <p><strong>Missing:</strong> {totalMissing}</p>
+                 <p><strong>Coverage:</strong> {totalCoverage}</p>
+             </div>
             <Table data={tableData} />
         </div>
     );
