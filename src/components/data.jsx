@@ -58,33 +58,39 @@ export const getTimesInArray = function(array, name) {
     },0);
 }
 
+let childArr = [];
+const tableData = [];
+
+
+export const buildTableEntriesWithChild = function (path) {
+    var parentRow = {
+        'path': path,
+        'name': path,
+        'children': childArr,
+        'statements': 0,
+        'missing': 0,
+        'coverage': 0
+    }
+    tableData.push(parentRow)
+    for(var key in json) {
+        if(key.indexOf(path) !== -1) {
+            childArr.push(buildTableData(key, 'child', parentRow))
+        }
+    }
+    childArr = []
+}
+
 export default React.createClass({
   render: function() {
-    const tableData = []
-
+   
     for(let key in json) {
         const path = getPath(key);
         if (path.length > 0) {
-            var childArr = []
-
+            
             const numInArray = getTimesInArray(tableData, path);
             
             if (numInArray === 0) {
-                var parentRow = {
-                    'path': path,
-                    'name': path,
-                    'children': childArr,
-                    'statements': 0,
-                    'missing': 0,
-                    'coverage': 0
-                }
-                tableData.push(parentRow)
-                for(var key in json) {
-                    if(key.indexOf(path) !== -1) {
-                        childArr.push(buildTableData(key, 'child', parentRow))
-                    }
-                }
-                childArr = []
+                buildTableEntriesWithChild(path);
             }
         } else {
             tableData.push(buildTableData(key));
