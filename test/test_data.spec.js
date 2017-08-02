@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getCoverage, getPath, buildTableData, getTimesInArray} from '../src/components/data';
+import {getCoverage, getPath, buildTableData, getTimesInArray, buildTableEntriesWithChild} from '../src/components/data';
 
 describe('data', () => {
     describe('getCoverage', () => {
@@ -59,6 +59,18 @@ describe('data', () => {
         it('returns 0', () => {
             const result = getTimesInArray(data, 'apples')
             expect(result).to.equal(0);
+        })
+    })
+    describe('buildTableEntriesWithChild', () => {
+        it('correctly calculates the parent directorys statements', () => {
+            const data = {
+                "utils/Copy.java ": [15, 37],
+                "utils/Paste.java ": [14, 14],
+                "utils/nums/Add.java ": [9, 22],
+            }
+            const path = getPath('/utils/file.java');
+            const result = buildTableEntriesWithChild(path, data)
+            expect(result.statements).to.equal(73);
         })
     })
 })

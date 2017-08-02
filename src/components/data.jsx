@@ -59,10 +59,8 @@ export const getTimesInArray = function(array, name) {
 }
 
 let childArr = [];
-const tableData = [];
 
-
-export const buildTableEntriesWithChild = function (path) {
+export const buildTableEntriesWithChild = function (path, data) {
     var parentRow = {
         'path': path,
         'name': path,
@@ -71,26 +69,28 @@ export const buildTableEntriesWithChild = function (path) {
         'missing': 0,
         'coverage': 0
     }
-    tableData.push(parentRow)
-    for(var key in json) {
+    for(var key in data) {
         if(key.indexOf(path) !== -1) {
             childArr.push(buildTableData(key, 'child', parentRow))
         }
     }
-    childArr = []
+    childArr = [];
+    return parentRow;
 }
 
 export default React.createClass({
   render: function() {
-   
-    for(let key in json) {
+    const data = json;
+    const tableData = [];
+    for(let key in data) {
         const path = getPath(key);
         if (path.length > 0) {
             
             const numInArray = getTimesInArray(tableData, path);
             
             if (numInArray === 0) {
-                buildTableEntriesWithChild(path);
+                var entry = buildTableEntriesWithChild(path, data);
+                tableData.push(entry)
             }
         } else {
             tableData.push(buildTableData(key));
