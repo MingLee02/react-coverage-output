@@ -71,6 +71,17 @@ describe('data', () => {
             const path = getPath('/utils/file.java');
             const result = buildTableEntriesWithChild(path, data)
             expect(result.statements).to.equal(73);
+        });
+        it('correctly', () => {
+            const data = {
+                "utils/Copy.java ": [15, 37],
+                "utils/Paste.java ": [14, 14],
+                "utils/nums/Add.java ": [9, 22],
+                "foo/utils/nums/Add.java ": [9000, 22000],
+            }
+            const path = getPath('/utils/file.java');
+            const result = buildTableEntriesWithChild(path, data)
+            expect(result.statements).to.equal(73);
         })
     })
 })

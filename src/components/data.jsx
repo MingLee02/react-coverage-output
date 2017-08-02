@@ -1,5 +1,5 @@
 import React from 'react';
-import json from '../data/test.json';
+import json from '../data/test2.json';
 import Table from './table';
 
 export const getCoverage = function(statements=0, tests=0) {
@@ -19,7 +19,7 @@ export const getPath = function(key="") {
     if (key.charAt(0) === '/') {
         key = key.substring(1);
     }
-    return key.substring(0, key.indexOf('/'));
+    return key = key.substring(0, key.indexOf('/'));
 };
 
 const aggregateParentsData = function (object, missing, value) {
@@ -70,7 +70,7 @@ export const buildTableEntriesWithChild = function (path, data) {
         'coverage': 0
     }
     for(var key in data) {
-        if(key.indexOf(path) !== -1) {
+        if(key.substring(0, key.indexOf('/')) === path) {
             childArr.push(buildTableData(key, 'child', parentRow))
         }
     }
@@ -85,7 +85,6 @@ export default React.createClass({
     for(let key in data) {
         const path = getPath(key);
         if (path.length > 0) {
-            
             const numInArray = getTimesInArray(tableData, path);
             
             if (numInArray === 0) {

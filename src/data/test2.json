@@ -1,0 +1,8 @@
+{
+	"Main.java": [0, 10],
+	"utils/Copy.java ": [15, 37],
+	"utils/Paste.java ": [14, 14],
+	"utils/nums/Add.java ": [9, 22],
+	"foo/utils/nums/Add.java ": [9000, 22000],
+	"ui/Window.java ": [23, 79]
+}
