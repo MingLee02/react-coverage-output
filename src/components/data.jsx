@@ -19,7 +19,7 @@ export const getPath = function(key="") {
     if (key.charAt(0) === '/') {
         key = key.substring(1);
     }
-    return key = key.substring(0, key.indexOf('/'));
+    return key.substring(0, key.indexOf('/'));
 };
 
 const aggregateParentsData = function (object, missing, value) {
